@@ -1,5 +1,4 @@
 import pygame as pg
-import math
 from character import Character
 from keyhandler import keyhandler
 from level import Level
