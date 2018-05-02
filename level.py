@@ -4,7 +4,7 @@ from character import Character
 
 class Level():
     def __init__(self):
-        self.gravity = 5
+        self.gravity = 10
         self.isGrounded = False
         self.platforms = []
 
@@ -14,7 +14,6 @@ class Level():
         self.detectGround(drawingSurface, sprite)
         self.drawPlatforms(self.platforms, drawingSurface)
         self.collisions(self.platforms, sprite)
-
     def detectGround(self, drawingSurface,sprite):
 
         if(Character.y >= drawingSurface.get_height() - 100):

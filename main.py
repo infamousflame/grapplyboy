@@ -18,6 +18,8 @@ mouseY = 0
 level1 = Level()
 level1.addPlatform(200, 300)
 level1.addPlatform(400, 500)
+level1.addPlatform(400, 100)
+
 icon = pg.image.load("img/icon.png")
 pg.display.set_icon(icon)
 
@@ -41,10 +43,15 @@ while isRunning:
 
 
         if event.type == pg.MOUSEBUTTONDOWN:
-            character.addGrapple(event.pos[0], event.pos[1])
+            if event.button == 1:
+                character.addGrapple(event.pos[0], event.pos[1])
+        elif event.type == pg.MOUSEBUTTONUP:
+            if event.button == 3:
+                character.removeGrapple()
 
     level1.applyLevelPhysics(screen, character)
     character.renderGrapple(screen)
+    character.applyMomentum()
     screen.blit(character.image, (Character.x, Character.y))
     screen.blit(pg.transform.rotate(character.armImage, character.getAngle((Character.x + character.width/2, Character.y + character.height/2),
                                                                            (mouseX, mouseY))), (Character.x + character.width/2, Character.y + character.height/2))

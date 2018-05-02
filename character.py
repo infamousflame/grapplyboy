@@ -12,6 +12,7 @@ class Character(pg.sprite.Sprite):
         Character.x,Character.y = (30, 300)
         self.height, self.width = self.image.get_height(), self.image.get_width()
         self.rect = {"x": Character.x, "y": Character.y, "width": self.image.get_height(), "height": self.image.get_width()}
+        self.momentum = 0
 
     def getAngle(self, start, end):
         return -math.atan2(end[1] - start[1], end[0] - start[0]) * 180 / math.pi
@@ -23,16 +24,23 @@ class Character(pg.sprite.Sprite):
             self.hooks = []
         self.hooks.append({"color": (0, 0, 0), "start": (Character.x, Character.y), "end": (x, y), "width": 1, "height":(20)})
 
+    def removeGrapple(self):
+        self.hooks = []
+
     def renderGrapple(self, screen):
         for hook in self.hooks:
             if not self.isGrappled:
                 self.tempX += (hook['end'][0] - Character.x) * .1
                 self.tempY += (hook['end'][1] - Character.y) * .1
-            pg.draw.line(screen, hook['color'], hook['start'], (self.tempX, self.tempY), hook['width'])
+            pg.draw.line(screen, hook['color'], (Character.x, Character.y), (self.tempX, self.tempY), hook['width'])
+
+    def applyMomentum(self):
+        Character.x += self.momentum
 
     def flyToGrapple(self, hook):
         Character.x += (hook['end'][0] - self.x) * .1
         Character.y += (hook['end'][1] - self.y) * .1
+        self.momentum = (hook['end'][0] - self.x) * .07
 
     def checkHookCollision(self, platform):
         rect1 = platform.rect
