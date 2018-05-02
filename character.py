@@ -30,10 +30,14 @@ class Character(pg.sprite.Sprite):
     def renderGrapple(self, screen):
         for hook in self.hooks:
             if not self.isGrappled:
-                self.tempX += (hook['end'][0] - Character.x) * .1
-                self.tempY += (hook['end'][1] - Character.y) * .1
-            pg.draw.line(screen, hook['color'], (Character.x, Character.y), (self.tempX, self.tempY), hook['width'])
+                if (math.fabs(self.tempX - Character.x) + math.fabs(self.tempY - Character.y)) < 600:
+                    self.tempX += (hook['end'][0] - Character.x) * .1
+                    self.tempY += (hook['end'][1] - Character.y) * .1
+                    pg.draw.line(screen, hook['color'], (Character.x, Character.y), (self.tempX, self.tempY), hook['width'])
+            elif self.isGrappled:
+                pg.draw.line(screen, hook['color'], (Character.x, Character.y), (self.tempX, self.tempY), hook['width'])
 
+            # pg.draw.line(screen, hook['color'], (Character.x, Character.y), (hook['end'][0], hook['end'][1]), hook['width'])
     def applyMomentum(self):
         Character.x += self.momentum
 
